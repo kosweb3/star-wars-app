@@ -3,8 +3,8 @@ import HeroList from "../components/HeroList.vue";
 import HeroDetails from "../components/HeroDetails.vue";
 
 const routes = [
-  { path: "/", component: HeroList },
-  { path: "/hero/:id", component: HeroDetails },
+  { path: "/star-wars-app", component: HeroList },
+  { path: "/star-wars-app/hero/:id", component: HeroDetails },
 ];
 
 const router = createRouter({

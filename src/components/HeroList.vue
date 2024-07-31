@@ -58,7 +58,7 @@ const nextPage = () => {
 
 const selectHero = (url) => {
   const id = url.split("/").filter(Boolean).pop(); // Отримання ID з URL
-  router.push(`/hero/${id}`);
+  router.push(`/star-wars-app/hero/${id}`);
 };
 
 onMounted(() => {
