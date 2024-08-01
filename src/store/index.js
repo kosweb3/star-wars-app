@@ -30,11 +30,18 @@ export const useHeroStore = defineStore("heroStore", () => {
       const heroResponse = await axios.get(`${API_URL}/people/${id}/`);
       const hero = heroResponse.data;
 
-      const filmRequests = hero.films.map((url) => axios.get(url));
+      const filmRequests = hero.films.map((url) =>
+        axios.get(`${API_URL}/films/${url.split("/").filter(Boolean).pop()}/`)
+      );
       const films = await Promise.all(filmRequests);
 
-      const starshipUrls = films.flatMap((film) => film.data.starships);
-      const starshipRequests = starshipUrls.map((url) => axios.get(url));
+      const starshipRequests = films.flatMap((film) =>
+        film.data.starships.map((url) =>
+          axios.get(
+            `${API_URL}/starships/${url.split("/").filter(Boolean).pop()}/`
+          )
+        )
+      );
       const starships = await Promise.all(starshipRequests);
 
       const starshipDict = starships.reduce((acc, starship) => {
@@ -51,7 +58,6 @@ export const useHeroStore = defineStore("heroStore", () => {
       heroDetails.value = {
         ...hero,
         films: filmsWithStarships,
-        starships: starships.map((s) => s.data),
       };
     } catch (error) {
       console.error("Error fetching hero details:", error);
