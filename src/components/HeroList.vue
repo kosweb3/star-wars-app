@@ -1,12 +1,15 @@
 <template>
-  <div class="hero-list-container">
-    <div v-if="loading">Loding...</div>
+  <div class="hero-list__container">
+    <loader v-if="loading" />
     <div v-else>
-      <ul>
+      <h2>Select your heroe:</h2>
+
+      <ul class="hero-list__items">
         <li
           v-for="hero in heroes"
           :key="hero.url"
           @click="selectHero(hero.url)"
+          class="hero-list__item"
         >
           {{ hero.name }}
         </li>
@@ -21,49 +24,25 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from "vue";
+import { onMounted } from "vue";
 import { useRouter } from "vue-router";
-import { fetchHeroes } from "../services/api";
+import { useHeroStore } from "../store";
+import { storeToRefs } from "pinia";
+import loader from "@/components/loader.vue";
 
-const heroes = ref([]);
-const page = ref(1);
-const hasMore = ref(true);
-const loading = ref(true);
 const router = useRouter();
 
-const loadHeroes = async () => {
-  const data = await fetchHeroes(page.value);
-  if (data) {
-    loading.value = false;
-    heroes.value = data.results;
-    hasMore.value = !!data.next; // Перевірка наявності наступної сторінки
-  }
-};
-
-const prevPage = () => {
-  if (page.value > 1) {
-    page.value--;
-    loadHeroes();
-  }
-};
-
-const nextPage = () => {
-  loading.value = true;
-  if (hasMore.value) {
-    loading.value = false;
-    page.value++;
-    loadHeroes();
-  }
-};
+// heroStore
+const heroStore = useHeroStore();
+const { fetchHeroes, prevPage, nextPage } = heroStore;
+const { heroes, page, hasMore, loading } = storeToRefs(heroStore);
 
 const selectHero = (url) => {
-  const id = url.split("/").filter(Boolean).pop(); // Отримання ID з URL
+  const id = url.split("/").filter(Boolean).pop(); // GET ID from URL
   router.push(`/star-wars-app/hero/${id}`);
 };
 
 onMounted(() => {
-  loadHeroes();
+  fetchHeroes();
 });
 </script>
-
-<style></style>

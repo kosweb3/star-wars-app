@@ -2,15 +2,18 @@ export const createGraph = (hero) => {
   const nodes = [];
   const edges = [];
 
-  // Додавання головної ноди героя
-  const heroId = `hero-${hero.url.split("/").filter(Boolean).pop()}`;
+  // Adding general nodes of heroes
+  const heroId = `hero-${hero.url
+    .split("/star-wars-app/hero")
+    .filter(Boolean)
+    .pop()}`;
   nodes.push({
     id: heroId,
     data: { label: hero.name },
     position: { x: 0, y: 0 },
   });
 
-  // Додавання фільмів і зв'язків до них
+  //   Adding films and links to them
   hero.films.forEach((film, filmIndex) => {
     const filmId = `film-${filmIndex}`;
     nodes.push({
@@ -25,7 +28,7 @@ export const createGraph = (hero) => {
       target: filmId,
     });
 
-    // Додавання космічних кораблів і зв'язків до них
+    // Adding starship and links to them
     film.starships.forEach((starship, starshipIndex) => {
       const starshipId = `starship-${starshipIndex}`;
       nodes.push({

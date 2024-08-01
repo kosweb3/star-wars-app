@@ -1,6 +1,6 @@
 import { createRouter, createWebHistory } from "vue-router";
-import HeroList from "../components/HeroList.vue";
-import HeroDetails from "../components/HeroDetails.vue";
+import HeroList from "@/components/HeroList.vue";
+import HeroDetails from "@/components/HeroDetails.vue";
 
 const routes = [
   { path: "/star-wars-app", component: HeroList },
