@@ -39,7 +39,7 @@ const { heroes, page, hasMore, loading } = storeToRefs(heroStore);
 
 const selectHero = (url) => {
   const id = url.split("/").filter(Boolean).pop(); // GET ID from URL
-  router.push(`/star-wars-app/hero/${id}`);
+  router.push(`/hero/${id}`);
 };
 
 onMounted(() => {
